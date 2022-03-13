@@ -1,0 +1,79 @@
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <title>
+    kari
+  </title>
+  <style>
+    table {
+      font-size: 80%;
+    }
+    td {
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+
+<body style="margin:0; padding:0;height: 100vh;">
+  <div id="app">
+    <table>
+      <tr>
+        <th>セット</th>
+        <th>光明石</th>
+        <th>調合効果</th>
+        <th>石の効果</th>
+        <th>合計効果</th>
+      </tr>
+      <tr v-for="set_effect in set_effects">
+        <td>
+          {{set_effect.set_name}}
+        </td>
+        <td>
+          <div v-for="stone in set_effect.stone_effects">
+            <div style="width: 3em; display: inline-block;">{{"☆".repeat(Number(stone.rare))}}</div>
+            <template v-if="stone.name.match('火の光明石')">
+              <span style="color:red">{{stone.name}}</span>
+            </template>
+            <template v-else-if="stone.name.match('地の光明石')">
+              <span style="color:orange">{{stone.name}}</span>
+            </template>
+            <template v-else-if="stone.name.match('風の光明石')">
+              <span style="color:blue">{{stone.name}}</span>
+            </template>
+            <template v-else-if="stone.name.match('森の光明石')">
+              <span style="color:green">{{stone.name}}</span>
+            </template>
+            <template v-else>
+              <span style="color:magenta">{{stone.name}}</span>
+            </template>
+            
+          </div>
+        </td>
+        <td>
+          <div v-for="effect in set_effect.effects">
+            {{effect.effect_type}}{{effect.direction}}{{effect.amount}}{{effect.unit}}
+          </div>
+        </td>
+        <td>
+          <div v-for="effect in set_effect.stone_effects">
+            {{effect.effect_type}}{{effect.direction}}{{effect.amount}}{{effect.unit}}
+          </div>
+        </td>
+        <td>
+          <div v-for="effect in set_effect.including_stone_effects">
+            {{effect.effect_type}}{{effect.direction}}{{effect.amount}}{{effect.unit}}
+          </div>
+        </td>
+
+      </tr>
+    </table>
+
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
