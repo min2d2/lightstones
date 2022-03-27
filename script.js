@@ -2283,7 +2283,7 @@ const data = {
                     "unit": ""
                 },
                 {
-                    "effect_type": "エアーアタックダメージ量",
+                    "effect_type": "バックアタックダメージ量",
                     "direction": "+",
                     "amount": "3",
                     "unit": "%"
