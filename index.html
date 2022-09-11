@@ -5,74 +5,103 @@
   <title>
     光明石
   </title>
+  <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
   <style>
     table {
       font-size: 80%;
     }
+
     td {
       border: 1px solid #ccc;
     }
   </style>
 </head>
 
-<body style="margin:0; padding:0;height: 100vh;">
+<body style="margin:0; padding:0; height: 100vh;">
   <div id="app">
-    <table>
-      <tr>
-        <th>セット</th>
-        <th>光明石</th>
-        <th>調合効果</th>
-        <th>石の効果</th>
-        <th>合計効果</th>
-      </tr>
-      <tr v-for="set_effect in set_effects">
-        <td>
-          {{set_effect.set_name}}
-        </td>
-        <td>
-          <div v-for="stone in set_effect.stone_effects">
-            <div style="width: 3em; display: inline-block;">{{"☆".repeat(Number(stone.rare))}}</div>
-            <template v-if="stone.name.match('火の光明石')">
-              <span style="color:red">{{stone.name}}</span>
-            </template>
-            <template v-else-if="stone.name.match('地の光明石')">
-              <span style="color:orange">{{stone.name}}</span>
-            </template>
-            <template v-else-if="stone.name.match('風の光明石')">
-              <span style="color:blue">{{stone.name}}</span>
-            </template>
-            <template v-else-if="stone.name.match('森の光明石')">
-              <span style="color:green">{{stone.name}}</span>
-            </template>
-            <template v-else>
-              <span style="color:magenta">{{stone.name}}</span>
-            </template>
-            
-          </div>
-        </td>
-        <td>
-          <div v-for="effect in set_effect.effects">
-            {{effect.effect_type}}{{effect.direction}}{{effect.amount}}{{effect.unit}}
-          </div>
-        </td>
-        <td>
-          <div v-for="effect in set_effect.stone_effects">
-            {{effect.effect_type}}{{effect.direction}}{{effect.amount}}{{effect.unit}}
-          </div>
-        </td>
-        <td>
-          <div v-for="effect in set_effect.including_stone_effects">
-            {{effect.effect_type}}{{effect.direction}}{{effect.amount}}{{effect.unit}}
-          </div>
-        </td>
+    <b-field>
+      <b-checkbox-button v-model="stoneType" native-value="火">
+        火
+      </b-checkbox-button>
+      <b-checkbox-button v-model="stoneType" native-value="地">
+        地
+      </b-checkbox-button>
+      <b-checkbox-button v-model="stoneType" native-value="風">
+        風
+      </b-checkbox-button>
+      <b-checkbox-button v-model="stoneType" native-value="森">
+        森
+      </b-checkbox-button>
+      <b-checkbox-button v-model="stoneType" native-value="五色">
+        五色
+      </b-checkbox-button>
 
-      </tr>
-    </table>
+      <div style="width: 20px;"></div>
+
+      <b-checkbox v-model="showTri">
+        3個セットを表示
+      </b-checkbox>
+    </b-field>
+
+
+
+    <b-table :data="filteredSetEffects" :sticky-header="true" height="90%" style="width: 1200px">
+      <b-table-column field="id" label="セット" numeric v-slot="props">
+        {{ props.row.set_name }}
+      </b-table-column>
+
+      <b-table-column field="stones" label="　　　　光明石" v-slot="props">
+        <div v-for="stone in props.row.stone_effects">
+          <div style="width: 3em; display: inline-block;">{{"☆".repeat(Number(stone.rare))}}</div>
+          <template v-if="stone.name.match('火の光明石')">
+            <span style="color:red">{{stone.name}}</span>
+          </template>
+          <template v-else-if="stone.name.match('地の光明石')">
+            <span style="color:orange">{{stone.name}}</span>
+          </template>
+          <template v-else-if="stone.name.match('風の光明石')">
+            <span style="color:blue">{{stone.name}}</span>
+          </template>
+          <template v-else-if="stone.name.match('森の光明石')">
+            <span style="color:green">{{stone.name}}</span>
+          </template>
+          <template v-else>
+            <span style="color:magenta">{{stone.name}}</span>
+          </template>
+        </div>
+      </b-table-column>
+
+      <b-table-column field="effects" label="調合効果" v-slot="props">
+        <div v-for="effect in props.row.effects">
+          {{effect.effect_type}}{{effect.direction}}{{effect.amount}}{{effect.unit}}
+        </div>
+      </b-table-column>
+
+
+      <b-table-column field="stone_effectss" label="石の効果" v-slot="props">
+        <div v-for="effect in props.row.stone_effects">
+          {{effect.effect_type}}{{effect.direction}}{{effect.amount}}{{effect.unit}}
+        </div>
+      </b-table-column>
+
+      <b-table-column field="including_stone_effects" label="合計効果" v-slot="props">
+        <div v-for="effect in props.row.including_stone_effects">
+          {{effect.effect_type}}{{effect.direction}}{{effect.amount}}{{effect.unit}}
+        </div>
+      </b-table-column>
+
+    </b-table>
 
   </div>
 
 
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+
+  <!-- Individual components -->
+  <script src="https://unpkg.com/buefy/dist/components/table"></script>
+
+  <script src="data.js"></script>
   <script src="script.js"></script>
 </body>
 
